@@ -1,0 +1,3 @@
+src/main/java/beans/Point.java
+src/main/java/beans/Validator.java
+.gitignore

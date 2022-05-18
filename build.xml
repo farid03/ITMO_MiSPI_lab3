@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="web3" default="retrieve" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant">
+  <property file="build.properties"/>
+
+  <target name="retrieve" description="description">
+    <ivy:retrieve />
+  </target>
+
+  <target name="clearIvyCache" description="description">
+    <ivy:cleancache />
+  </target>
+
+  <target name="resolve" description="resolve dependencies">
+    <ivy:resolve />
+  </target>
+
+  <path id="classpath.source">
+    <fileset dir="${lib.dir}" includes="**/*.jar"/>
+  </path>
+
+  <target name="compile" depends="retrieve">
+    <echo message="--- COMPILE ---"/>
+    <mkdir dir="${compiled.classes}"/>
+    <javac srcdir="${src.dir}" destdir="${compiled.classes}" includeantruntime="false">
+      <classpath>
+        <pathelement location="${compiled.classes}"/>
+        <path refid="classpath.source"/>
+      </classpath>
+    </javac>
+  </target>
+
+  <target name="build" depends="compile">
+    <echo message="--- BUILD ---"/>
+    <war destfile="${web3.war}" webxml="${web.xml}" basedir="${compiled.classes}" compress="false" index="true"/>
+  </target>
+
+  <target name="compile-tests" depends="build">
+    <echo message="--- TESTS COMPILING ---"/>
+    <mkdir dir="${compiled.tests}"/>
+    <javac destdir="${compiled.tests}" includeantruntime="false">
+      <src path="${test}"/>
+      <classpath>
+        <pathelement location="${compiled.classes}"/>
+        <path refid="classpath.source"/>
+      </classpath>
+    </javac>
+  </target>
+
+  <target name="test" depends="compile-tests">
+    <echo message="--- TEST ---"/>
+    <mkdir dir="${reports.dir}"/>
+    <junit fork="true" printsummary="on">
+      <formatter type="xml"/>
+      <classpath>
+        <path refid="classpath.source"/>
+        <pathelement location="${compiled.classes}"/>
+        <pathelement location="${compiled.tests}"/>
+      </classpath>
+      <batchtest todir="reports">
+        <fileset dir="${test}" includes="*Test*.java"/>
+      </batchtest>
+    </junit>
+  </target>
+
+  <target name="clean" description="Clean the output directory">
+    <delete dir="${build.dir}"/>
+  </target>
+
+  <target name="native2ascii">
+    <native2ascii src="./src/main//resources/before" dest="./src/main/resources/after"
+                  includes="*.properties" ext=".properties"/>
+  </target>
+
+  <target name="diff">
+    <exec executable='/bin/bash'>
+      <arg line="script.sh"/>
+    </exec>
+  </target>
+
+  <target name="help">
+    <echo message="Please run: $ant -projecthelp"/>
+  </target>
+
+</project>

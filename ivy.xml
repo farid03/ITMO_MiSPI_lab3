@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ivy-module version="2.0">
+    <info organisation="ru.ifmo.se" module="ivy">
+    </info>
+    <dependencies>
+        <dependency org="org.primefaces" name="primefaces" rev="10.0.0"/>
+        <dependency org="com.sun.faces" name="jsf-api" rev="2.2.20"/>
+        <dependency org="org.projectlombok" name="lombok" rev="1.18.22"/>
+        <dependency org="javax" name="javaee-api" rev="8.0.1"/>
+        <dependency org="com.oracle.ojdbc" name="ojdbc8" rev="19.3.0.0"/>
+        <dependency org="org.eclipse.persistence" name="org.eclipse.persistence.jpa" rev="3.0.2"/>
+        <dependency org="com.sun.faces" name="jsf-impl" rev="2.2.20"/>
+        <dependency org="junit" name="junit" rev="4.12"/>
+    </dependencies>
+
+</ivy-module>
